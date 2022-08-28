@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  namespace: time-series
+spec:
+  ports:
+    - port: 8086
+      targetPort: 8086
+      name: influxdb
+  selector:
+    app: influxdb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+  namespace: time-series
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      containers:
+        - name: influxdb
+          image: influxdb:2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8086
+              name: influxdb
+          volumeMounts:
+            - name: influxdb-data-persistent-storage
+              mountPath: /var/lib/influxdb2
+#            - name: influxdb-config
+#              mountPath: /etc/influxdb2
+#              readOnly: true
+      volumes:
+        - name: influxdb-data-persistent-storage
+          persistentVolumeClaim:
+            claimName: influxdb-pvc
+#        - name: influxdb-config
+#          configMap:
+#            name: influxdb-config
