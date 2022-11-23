@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 	"timeseries/pkg/api"
-	models "timeseries/pkg/model"
+	"timeseries/pkg/models"
 
 	"github.com/gin-gonic/gin"
 )
