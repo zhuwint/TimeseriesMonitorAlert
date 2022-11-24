@@ -1,6 +1,8 @@
 package influxdb
 
-import "time"
+import (
+	"time"
+)
 
 // Point use for http response
 type Point struct {
